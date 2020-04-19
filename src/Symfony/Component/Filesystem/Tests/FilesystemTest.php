@@ -1155,6 +1155,7 @@ class FilesystemTest extends FilesystemTestCase
             ['C:/aa/bb/../../cc', 'C:/aa/../dd/..', 'cc/'],
             ['C:/../aa/bb/cc', 'C:/aa/dd/..', 'bb/cc/'],
             ['C:/../../aa/../bb/cc', 'C:/aa/dd/..', '../bb/cc/'],
+            ['D:/aa/bb', 'C:/aa', 'D:/aa/bb'],
         ];
 
         if ('\\' === \DIRECTORY_SEPARATOR) {
