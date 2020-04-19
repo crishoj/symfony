@@ -435,15 +435,18 @@ class Filesystem
         }
 
         $stripDriveLetter = function ($path) {
-            if (\strlen($path) > 2 && ':' === $path[1] && '/' === $path[2] && ctype_alpha($path[0])) {
-                return substr($path, 2);
-            }
-
-            return $path;
+            return (\strlen($path) > 2 && ':' === $path[1] && '/' === $path[2] && ctype_alpha($path[0]))
+                ? [substr($path, 2), $path[0]]
+                : [$path, null];
         };
 
-        $endPath = $stripDriveLetter($endPath);
-        $startPath = $stripDriveLetter($startPath);
+        [$endPath, $endDriveLetter] = $stripDriveLetter($endPath);
+        [$startPath, $startDriveLetter] = $stripDriveLetter($startPath);
+
+        if ($endDriveLetter && $startDriveLetter && $endDriveLetter <> $startDriveLetter) {
+            // Different drives
+            return $endDriveLetter.':'.$endPath;
+        }
 
         // Split the paths into arrays
         $startPathArr = explode('/', trim($startPath, '/'));
